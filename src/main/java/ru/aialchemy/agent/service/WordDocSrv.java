@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.WordDocumentContent;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,16 +27,19 @@ public class WordDocSrv {
         try {
             String content;
             List<String> paragraphs;
-            var inputStream = file.getInputStream();
 
             if ("docx".equalsIgnoreCase(extension)) {
                 // Чтение .docx файлов
-                content = readDocxContent(inputStream);
-                paragraphs = extractParagraphsFromDocx(inputStream);
+                var document = new XWPFDocument(file.getInputStream());
+                content = readDocxContent(document);
+                paragraphs = extractParagraphsFromDocx(document);
+                document.close();
             } else {
                 // Чтение .doc файлов
-                content = readDocContent(inputStream);
-                paragraphs = extractParagraphsFromDoc(inputStream);
+                var document = new HWPFDocument(file.getInputStream());
+                content = readDocContent(document);
+                paragraphs = extractParagraphsFromDoc(document);
+                document.close();
             }
 
             return new WordDocumentContent(fileName, content, paragraphs.size(), paragraphs);
@@ -51,8 +53,7 @@ public class WordDocSrv {
     /**
      * Чтение содержимого .docx файла
      */
-    private String readDocxContent(InputStream inputStream) throws IOException {
-        XWPFDocument document = new XWPFDocument(inputStream);
+    private String readDocxContent(XWPFDocument document) throws IOException {
         StringBuilder content = new StringBuilder();
 
         // 1. Чтение всех параграфов
@@ -72,45 +73,37 @@ public class WordDocSrv {
                 content.append("\n");
             }
         }
-
-        document.close();
         return content.toString().trim();
     }
 
     /**
      * Извлечение параграфов из .docx для структурированного представления
      */
-    private List<String> extractParagraphsFromDocx(InputStream inputStream) throws IOException {
-        XWPFDocument document = new XWPFDocument(inputStream);
+    private List<String> extractParagraphsFromDocx(XWPFDocument document) throws IOException {
         List<String> paragraphs = document.getParagraphs().stream()
                 .map(XWPFParagraph::getText)
                 .filter(text -> !text.trim().isEmpty())
                 .collect(Collectors.toList());
-        document.close();
         return paragraphs;
     }
 
     /**
      * Чтение содержимого .doc файла
      */
-    private String readDocContent(InputStream inputStream) throws IOException {
-        HWPFDocument document = new HWPFDocument(inputStream);
+    private String readDocContent(HWPFDocument document) throws IOException {
         WordExtractor extractor = new WordExtractor(document);
         String content = extractor.getText();
         extractor.close();
-        document.close();
         return content.trim();
     }
 
     /**
      * Извлечение параграфов из .doc
      */
-    private List<String> extractParagraphsFromDoc(InputStream inputStream) throws IOException {
-        HWPFDocument document = new HWPFDocument(inputStream);
+    private List<String> extractParagraphsFromDoc(HWPFDocument document) throws IOException {
         WordExtractor extractor = new WordExtractor(document);
         String[] paragraphArray = extractor.getParagraphText();
         extractor.close();
-        document.close();
 
         return Arrays.stream(paragraphArray)
                 .map(text -> text.replace("\r", "").replace("\u0007", "").trim())

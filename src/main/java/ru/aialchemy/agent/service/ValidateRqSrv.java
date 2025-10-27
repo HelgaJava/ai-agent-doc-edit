@@ -28,7 +28,7 @@ public class ValidateRqSrv {
         var fileExtension = getFileExtension(fileName);
 
         // Валидация на входе
-        if (getFileExtension(fileName) == null) {
+        if (fileExtension == null) {
             log.warn("Неподдерживаемый тип файла: {}", fileName);
             return WordDocumentContent.error("Неподдерживаемый тип файла +" + fileName + " Поддерживаются типы .doc и .docx");
         }
