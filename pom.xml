@@ -21,6 +21,7 @@
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <java.version>17</java.version>
+        <apache.poi.version>5.4.1</apache.poi.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,23 @@
             <groupId>chat.giga</groupId>
             <artifactId>spring-ai-starter-model-gigachat</artifactId>
             <version>1.0.6</version>
+        </dependency>
+
+        <!-- Apache POI для Word -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>${apache.poi.version}</version>
         </dependency>
     </dependencies>
 
