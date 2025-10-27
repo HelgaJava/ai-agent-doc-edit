@@ -26,17 +26,17 @@ public class AiController {
     }
 
     @PostMapping(value = "/documents/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> editDoc(@RequestParam(name = "userRq") RequestEntity<UserRq> request, @RequestPart("file") MultipartFile file) {
-        var body = request.getBody();
-        log.info("Получен запрос пользователя: {} на работу с файлом {}", body, file.getOriginalFilename());
+    public ResponseEntity<String> editDoc(@RequestPart("userRq") UserRq request, @RequestPart("file") MultipartFile file) {
+        log.info("Получен запрос пользователя: {} на работу с файлом {}", request, file.getOriginalFilename());
 
         var wordDocumentContent = validateRqSrv.validate(file);
         if (wordDocumentContent.errorMessage() != null) {
             return ResponseEntity.badRequest().body(wordDocumentContent.errorMessage());
         }
 
-        var result = "Получен корректный файл для анализа:\n\n"+wordDocumentContent.content();
-//                gigaChatSrv.editText(body);
+        var result =
+//                "Получен корректный файл для анализа:\n"+wordDocumentContent.content();
+                gigaChatSrv.editText(request, wordDocumentContent);
         return ResponseEntity.ok(result);
     }
 

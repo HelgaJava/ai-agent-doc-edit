@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
+import ru.aialchemy.agent.tools.ContentTools;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +25,7 @@ public class Config {
     private static final Logger log = LoggerFactory.getLogger(Config.class);
 
     @Bean
-    public ChatClient chatClient(ChatClient.Builder builder, @Value("${giga.system.propmt.path}") String promptPath) {
+    public ChatClient chatClient(ChatClient.Builder builder, @Value("${giga.system.propmt.path}") String promptPath, ContentTools contentTools) {
         try {
             var systemPrompt = new String(Files.readAllBytes(Path.of(promptPath)));
 
@@ -34,6 +35,7 @@ public class Config {
                     .defaultOptions(GigaChatOptions.builder()
                             .model(GigaChatApi.ChatModel.GIGA_CHAT)
                             .build())
+                    .defaultTools(contentTools)
                     .build();
         } catch (IOException e) {
             log.error("Не удалось инициализировать клиента GigaChat: {}", e.getMessage());

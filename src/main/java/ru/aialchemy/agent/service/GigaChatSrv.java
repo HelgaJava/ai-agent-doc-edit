@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 import ru.aialchemy.agent.models.UserRq;
+import ru.aialchemy.agent.models.WordDocumentContent;
+
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -17,9 +20,13 @@ public class GigaChatSrv {
         this.chatClient = chatClient;
     }
 
-    public String editText(UserRq userRq) {
+    public String editText(UserRq userRq, WordDocumentContent wordDocumentContent) {
         String response = chatClient
                 .prompt()
+                .toolContext(Map.of(
+                        "fileContent", wordDocumentContent.content(),
+                        "fileName", wordDocumentContent.fileName()
+                ))
                 .user(userRq.userQuestion())
                 .call()
                 .content();
