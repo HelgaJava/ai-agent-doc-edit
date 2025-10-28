@@ -1,4 +1,4 @@
-package ru.aialchemy.agent.service;
+package ru.aialchemy.agent.services.doc.read;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aialchemy.agent.models.WordDocumentContent;
+import ru.aialchemy.agent.models.WordDocContent;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class WordDocSrv {
-    private static final Logger log = LoggerFactory.getLogger(WordDocSrv.class);
+public class WordDocReader {
+    private static final Logger log = LoggerFactory.getLogger(WordDocReader.class);
 
-    public WordDocumentContent readWordDocument(MultipartFile file, String extension, String fileName) {
+    public WordDocContent readWordDocument(MultipartFile file, String extension, String fileName) {
         try {
             String content;
             List<String> paragraphs;
@@ -42,7 +42,7 @@ public class WordDocSrv {
                 document.close();
             }
 
-            return new WordDocumentContent(fileName, content, paragraphs.size(), paragraphs);
+            return new WordDocContent(fileName, content, paragraphs.size(), paragraphs, extension);
 
         } catch (Exception e) {
             log.error("Ошибка чтения Word документа: {}", e.getMessage());
@@ -53,7 +53,7 @@ public class WordDocSrv {
     /**
      * Чтение содержимого .docx файла
      */
-    private String readDocxContent(XWPFDocument document) throws IOException {
+    private String readDocxContent(XWPFDocument document) {
         StringBuilder content = new StringBuilder();
 
         // 1. Чтение всех параграфов
@@ -79,7 +79,7 @@ public class WordDocSrv {
     /**
      * Извлечение параграфов из .docx для структурированного представления
      */
-    private List<String> extractParagraphsFromDocx(XWPFDocument document) throws IOException {
+    private List<String> extractParagraphsFromDocx(XWPFDocument document) {
         List<String> paragraphs = document.getParagraphs().stream()
                 .map(XWPFParagraph::getText)
                 .filter(text -> !text.trim().isEmpty())

@@ -1,4 +1,4 @@
-package ru.aialchemy.agent.service;
+package ru.aialchemy.agent.services.llm;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 import ru.aialchemy.agent.models.UserRq;
-import ru.aialchemy.agent.models.WordDocumentContent;
+import ru.aialchemy.agent.models.WordDocContent;
 
 import java.util.Map;
 
@@ -20,13 +20,10 @@ public class GigaChatSrv {
         this.chatClient = chatClient;
     }
 
-    public String editText(UserRq userRq, WordDocumentContent wordDocumentContent) {
+    public String editText(UserRq userRq, WordDocContent wordDocContent) {
         String response = chatClient
                 .prompt()
-                .toolContext(Map.of(
-                        "fileContent", wordDocumentContent.content(),
-                        "fileName", wordDocumentContent.fileName()
-                ))
+                .toolContext(Map.of("fileContent", wordDocContent))
                 .user(userRq.userQuestion())
                 .call()
                 .content();
