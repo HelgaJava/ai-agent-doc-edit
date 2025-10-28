@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import ru.aialchemy.agent.services.doc.read.WordDocReader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -15,9 +16,9 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class WordDocSrvTest {
+public class WordDocReaderTest {
     @InjectMocks
-    private WordDocSrv wordDocSrv;
+    private WordDocReader wordDocReader;
 
     @Test
     void readDocxCorrectContent() throws Exception {
@@ -28,7 +29,7 @@ public class WordDocSrvTest {
         );
 
         // When
-        var result = wordDocSrv.readWordDocument(file, "docx", "test.docx");
+        var result = wordDocReader.readWordDocument(file, "docx", "test.docx");
 
         // Then
         assertNotNull(result);
@@ -49,7 +50,7 @@ public class WordDocSrvTest {
         );
 
         // When
-        var result = wordDocSrv.readWordDocument(file, "doc", "test.doc");
+        var result = wordDocReader.readWordDocument(file, "doc", "test.doc");
 
         // Then
         assertNotNull(result);
@@ -70,7 +71,7 @@ public class WordDocSrvTest {
 
         // When & Then
         assertThrows(RuntimeException.class, () ->
-                wordDocSrv.readWordDocument(file, "pdf", "test.pdf")
+                wordDocReader.readWordDocument(file, "pdf", "test.pdf")
         );
     }
 
@@ -83,7 +84,7 @@ public class WordDocSrvTest {
 
         // When & Then
         assertThrows(RuntimeException.class, () ->
-                wordDocSrv.readWordDocument(file, "docx", "empty.docx")
+                wordDocReader.readWordDocument(file, "docx", "empty.docx")
         );
     }
 

@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aialchemy.agent.models.WordDocumentContent;
+import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.services.doc.read.WordDocValidator;
+import ru.aialchemy.agent.services.doc.read.WordDocReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,12 +17,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ValidateRqSrvTest {
+class WordDocValidatorTest {
     @Mock
-    private WordDocSrv wordDocSrv;
+    private WordDocReader wordDocReader;
 
     @InjectMocks
-    private ValidateRqSrv validateRqSrv;
+    private WordDocValidator wordDocValidator;
 
     @Test
     void validateDocxSuccess() {
@@ -29,12 +31,12 @@ class ValidateRqSrvTest {
                 "test.docx", "test.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "test content".getBytes()
         );
 
-        var expectedResult = new WordDocumentContent("test.docx", "Test content", 1, java.util.List.of("Test content"));
-        when(wordDocSrv.readWordDocument(any(MultipartFile.class), eq("docx"), eq("test.docx")))
+        var expectedResult = new WordDocContent("test.docx", "Test content", 1, java.util.List.of("Test content"), "docx");
+        when(wordDocReader.readWordDocument(any(MultipartFile.class), eq("docx"), eq("test.docx")))
                 .thenReturn(expectedResult);
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
@@ -49,12 +51,12 @@ class ValidateRqSrvTest {
                 "test.doc", "test.doc", "application/msword", "test content".getBytes()
         );
 
-        var expectedResult = new WordDocumentContent("test.doc", "Test content", 1, java.util.List.of("Test content"));
-        when(wordDocSrv.readWordDocument(any(MultipartFile.class), eq("doc"), eq("test.doc")))
+        var expectedResult = new WordDocContent("test.doc", "Test content", 1, java.util.List.of("Test content"), "docx");
+        when(wordDocReader.readWordDocument(any(MultipartFile.class), eq("doc"), eq("test.doc")))
                 .thenReturn(expectedResult);
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
@@ -70,7 +72,7 @@ class ValidateRqSrvTest {
         );
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
@@ -86,7 +88,7 @@ class ValidateRqSrvTest {
         );
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
@@ -101,7 +103,7 @@ class ValidateRqSrvTest {
         );
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
@@ -116,11 +118,11 @@ class ValidateRqSrvTest {
                 "test.docx", "test.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "test content".getBytes()
         );
 
-        when(wordDocSrv.readWordDocument(any(MultipartFile.class), eq("docx"), eq("test.docx")))
+        when(wordDocReader.readWordDocument(any(MultipartFile.class), eq("docx"), eq("test.docx")))
                 .thenThrow(new RuntimeException("Processing failed"));
 
         // When
-        var result = validateRqSrv.validate(file);
+        var result = wordDocValidator.validate(file);
 
         // Then
         assertNotNull(result);
