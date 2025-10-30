@@ -38,7 +38,8 @@ public class ContentTools {
     @Tool(description = "Внести изменения в текст")
     public String editText(ToolContext toolContext, @ToolParam(description = "значение из jobResult") String jobResult) {
         WordDocContent wordDocContent = (WordDocContent) toolContext.getContext().get("fileContent");
-        return wordDocSaver.rewriteFile(wordDocContent, folderSavingPath);
+//        return wordDocSaver.rewriteFile(wordDocContent, folderSavingPath);
+        return "";
 
     }
 }

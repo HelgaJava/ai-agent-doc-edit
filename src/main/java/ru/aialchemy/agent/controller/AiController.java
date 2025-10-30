@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.UserRq;
 import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.models.WordDocReplace;
 import ru.aialchemy.agent.services.doc.edit.WordDocEditor;
 import ru.aialchemy.agent.services.doc.edit.WordDocSaver;
 import ru.aialchemy.agent.services.llm.GigaChatSrv;
@@ -48,7 +49,9 @@ public class AiController {
         }
         WordDocContent wordDocContentNew = wordDocEditor.editContent(wordDocumentContent, "Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
                 "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
-        String rewritten = wordDocSaver.rewriteFile(wordDocContentNew, folder);
+        WordDocReplace wordDocReplace = new WordDocReplace("Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
+                "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
+        String rewritten = wordDocSaver.rewriteFile(file, wordDocContentNew, wordDocReplace, folder);
 
         var result = "Получен корректный файл для анализа:\n"+wordDocumentContent.content();
 //                gigaChatSrv.editText(request, wordDocumentContent);
