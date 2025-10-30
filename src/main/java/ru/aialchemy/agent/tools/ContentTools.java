@@ -14,11 +14,11 @@ import ru.aialchemy.agent.services.doc.edit.WordDocSaver;
 @Slf4j
 public class ContentTools {
     private final ObjectMapper mapper = new ObjectMapper();
-    private final String fileSavingPath;
+    private final String folderSavingPath;
     private final WordDocSaver wordDocSaver;
 
-    public ContentTools(@Value("${save.custom.path}") String fileSavingPath, WordDocSaver wordDocSaver) {
-        this.fileSavingPath = fileSavingPath;
+    public ContentTools(@Value("${save.custom.path}") String folderSavingPath, WordDocSaver wordDocSaver) {
+        this.folderSavingPath = folderSavingPath;
         this.wordDocSaver = wordDocSaver;
     }
 
@@ -37,7 +37,8 @@ public class ContentTools {
 
     @Tool(description = "Внести изменения в текст")
     public String editText(ToolContext toolContext, @ToolParam(description = "значение из jobResult") String jobResult) {
-        return "";
+        WordDocContent wordDocContent = (WordDocContent) toolContext.getContext().get("fileContent");
+        return wordDocSaver.rewriteFile(wordDocContent, folderSavingPath);
 
     }
 }
