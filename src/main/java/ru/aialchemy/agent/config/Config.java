@@ -22,7 +22,6 @@ import java.nio.file.Path;
 @Configuration
 @Slf4j
 public class Config {
-    private static final Logger log = LoggerFactory.getLogger(Config.class);
 
     @Bean
     public ChatClient chatClient(ChatClient.Builder builder, @Value("${giga.system.propmt.path}") String promptPath, ContentTools contentTools) {

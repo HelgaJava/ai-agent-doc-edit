@@ -9,32 +9,41 @@ import org.springframework.mock.web.MockMultipartFile;
 import ru.aialchemy.agent.models.WordDocContent;
 import ru.aialchemy.agent.models.WordDocReplace;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.aialchemy.agent.HelperTest.getFileContentFromResources;
 
 @ExtendWith(MockitoExtension.class)
-class WordDocSaverTest {
+class WordDocEditorTest {
 
     @InjectMocks
-    private WordDocSaver wordDocSaver;
+    private WordDocEditor wordDocEditor;
 
     @TempDir
     private Path tempDir;
 
     @Test
-    void rewriteFileDocxSuccess() {
+    void rewriteFileDocxSuccess() throws IOException, URISyntaxException {
         WordDocContent docContent = new WordDocContent(
                 "document.docx", "Content", 1, List.of("Content"), "docx"
         );
 
-        WordDocReplace wordDocReplace = new WordDocReplace("Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
-                "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
+        WordDocReplace wordDocReplace = new WordDocReplace("test content",
+                "test content new");
+
+        byte[] fileContent = getFileContentFromResources("TestWord.docx");
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "test.docx",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileContent);
 
         String filePath = tempDir.resolve(docContent.fileName()).toString();
-        String result = wordDocSaver.rewriteFile(null, docContent, wordDocReplace, tempDir.toString());
+        String result = wordDocEditor.rewriteFile(file, wordDocReplace, tempDir + "\\" + docContent.fileName(), docContent.fileExtension());
 
         assertEquals("Файл успешно сохранен по пути " + filePath, result);
         assertTrue(Files.exists(Path.of(filePath)));
@@ -42,14 +51,20 @@ class WordDocSaverTest {
 
 
     @Test
-    void rewriteFileDocSuccess() {
+    void rewriteFileDocSuccess() throws IOException, URISyntaxException {
         WordDocContent docContent = new WordDocContent(
                 "document.doc", "DOC Content", 1, List.of("DOC Content"), "doc"
         );
-        WordDocReplace wordDocReplace = new WordDocReplace("Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
-                "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
+        WordDocReplace wordDocReplace = new WordDocReplace("test content",
+                "test content new");
+
+        byte[] fileContent = getFileContentFromResources("TestWord.doc");
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "test.docx",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileContent);
         String filePath = tempDir.resolve("document.doc").toString();
-        String result = wordDocSaver.rewriteFile(null, docContent, wordDocReplace, tempDir.toString());
+        String result = wordDocEditor.rewriteFile(file, wordDocReplace, tempDir + "\\" + docContent.fileName(), docContent.fileExtension());
 
         assertEquals("Файл успешно сохранен по пути " + filePath, result);
         assertTrue(Files.exists(Path.of(filePath)));
@@ -57,36 +72,40 @@ class WordDocSaverTest {
     }
 
     @Test
-    void rewriteFileInvalidPathError() {
+    void rewriteFileInvalidPathError() throws IOException, URISyntaxException {
         WordDocContent docContent = new WordDocContent(
                 "test.docx", "Test content", 1, List.of("Test content"), "docx"
         );
+
+        byte[] fileContent = getFileContentFromResources("TestWord.docx");
+
         MockMultipartFile file = new MockMultipartFile(
                 "file", "test.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "test content".getBytes()
+               fileContent
         );
         WordDocReplace wordDocReplace = new WordDocReplace("", "");
 
         String filePath = "/invalidPath/test.docx";
 
-        String result = wordDocSaver.rewriteFile(file, docContent, wordDocReplace, "/invalidPath");
+        String result = wordDocEditor.rewriteFile(file, wordDocReplace, filePath, docContent.fileExtension());
 
         assertTrue(result.startsWith("Не удалось сохранить файл:"));
         assertFalse(Files.exists(Path.of(filePath)));
     }
 
     @Test
-    void rewriteFileInvalidFileNameError() {
+    void rewriteFileInvalidFileNameError() throws IOException, URISyntaxException {
         WordDocContent docContent = new WordDocContent(
                 "invalid<?>.docx", "Test content", 1, List.of("Test content"), "docx"
         );
+        byte[] fileContent = getFileContentFromResources("TestWord.docx");
         MockMultipartFile file = new MockMultipartFile(
-                "file", "test.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "test content".getBytes()
+                "file", "test.docx",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileContent
         );
         WordDocReplace wordDocReplace = new WordDocReplace("", "");
 
-        String result = wordDocSaver.rewriteFile(file, docContent, wordDocReplace, tempDir.toString());
+        String result = wordDocEditor.rewriteFile(file, wordDocReplace, tempDir + "/" + docContent.fileName(), docContent.fileExtension());
 
         assertTrue(result.startsWith("Не удалось сохранить файл:"));
     }

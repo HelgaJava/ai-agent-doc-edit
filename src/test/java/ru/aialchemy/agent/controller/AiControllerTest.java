@@ -57,8 +57,7 @@ class AiControllerTest {
                         .file(file)
                         .file(jsonPart)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Получен корректный файл для анализа:\n" + validResponse.content()));
+                .andExpect(status().isOk());
     }
 
     @Test

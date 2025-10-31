@@ -8,12 +8,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.services.doc.read.WordDocReader;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.aialchemy.agent.HelperTest.getFileContentFromResources;
 
 @ExtendWith(MockitoExtension.class)
 public class WordDocReaderTest {
@@ -88,11 +84,5 @@ public class WordDocReaderTest {
         );
     }
 
-    private byte[] getFileContentFromResources(String fileName) throws IOException, URISyntaxException {
-        var resource = getClass().getClassLoader().getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("File not found in resources: " + fileName);
-        }
-        return Files.readAllBytes(Paths.get(resource.toURI()));
-    }
+
 }

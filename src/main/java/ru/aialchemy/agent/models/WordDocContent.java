@@ -17,10 +17,6 @@ public record WordDocContent(
         this(fileName, content, paragraphCount, paragraphs, null, fileExtension);
     }
 
-    public static WordDocContent error(String fileName, String errorMessage) {
-        return new WordDocContent(fileName, null, 0, null, errorMessage, null);
-    }
-
     public static WordDocContent error(String errorMessage) {
         return new WordDocContent(null, null, 0, null, errorMessage, null);
     }

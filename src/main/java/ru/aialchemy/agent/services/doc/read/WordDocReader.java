@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.WordDocContent;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class WordDocReader {
-    private static final Logger log = LoggerFactory.getLogger(WordDocReader.class);
 
     public WordDocContent readWordDocument(MultipartFile file, String extension, String fileName) {
         try {

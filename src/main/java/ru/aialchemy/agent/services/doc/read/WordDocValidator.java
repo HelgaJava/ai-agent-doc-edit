@@ -1,8 +1,6 @@
 package ru.aialchemy.agent.services.doc.read;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.WordDocContent;
@@ -15,8 +13,6 @@ import static ru.aialchemy.agent.util.DocUtil.getFileExtension;
 @Service
 @Slf4j
 public class WordDocValidator {
-
-    private static final Logger log = LoggerFactory.getLogger(WordDocValidator.class);
     private final WordDocReader wordDocReader;
 
     public WordDocValidator(WordDocReader wordDocReader) {

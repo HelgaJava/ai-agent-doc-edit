@@ -1,38 +1,23 @@
 package ru.aialchemy.agent.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.UserRq;
-import ru.aialchemy.agent.models.WordDocContent;
-import ru.aialchemy.agent.models.WordDocReplace;
-import ru.aialchemy.agent.services.doc.edit.WordDocEditor;
-import ru.aialchemy.agent.services.doc.edit.WordDocSaver;
-import ru.aialchemy.agent.services.llm.GigaChatSrv;
 import ru.aialchemy.agent.services.doc.read.WordDocValidator;
+import ru.aialchemy.agent.services.llm.GigaChatSrv;
 
 @RestController
 @RequestMapping(path = "/api/v1")
 @Slf4j
 public class AiController {
-    private static final Logger log = LoggerFactory.getLogger(AiController.class);
     private final GigaChatSrv gigaChatSrv;
     private final WordDocValidator wordDocValidator;
-
-    @Autowired
-    private WordDocEditor wordDocEditor;
-
-    @Autowired
-    private WordDocSaver wordDocSaver;
-
-    @Value("${save.custom.path}")
-    private String folder;
 
     public AiController(GigaChatSrv gigaChatSrv, WordDocValidator wordDocValidator) {
         this.gigaChatSrv = gigaChatSrv;
@@ -47,16 +32,9 @@ public class AiController {
         if (wordDocumentContent.errorMessage() != null) {
             return ResponseEntity.badRequest().body(wordDocumentContent.errorMessage());
         }
-        WordDocContent wordDocContentNew = wordDocEditor.editContent(wordDocumentContent, "Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
-                "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
-        WordDocReplace wordDocReplace = new WordDocReplace("Маша придя домой поздним вечером быстро снила пальто бросила сумочку на деван",
-                "Маша, придя домой поздним вечером, быстро сняла пальто бросила сумочку на диван");
-        String rewritten = wordDocSaver.rewriteFile(file, wordDocContentNew, wordDocReplace, folder);
 
-        var result = "Получен корректный файл для анализа:\n"+wordDocumentContent.content();
-//                gigaChatSrv.editText(request, wordDocumentContent);
+        var result = gigaChatSrv.editText(request, wordDocumentContent, file);
         return ResponseEntity.ok(result);
     }
-
 
 }
