@@ -27,14 +27,14 @@ public class WordDocEditor {
     /**
      * Перезаписывает файл на основе модифицированного WordDocContent
      */
-    public String rewriteFile(MultipartFile originalFile, WordDocReplace wordDocReplace, String filePath, String fileExtension) {
+    public String rewriteFile(MultipartFile originalFile, List<WordDocReplace> wordDocReplace, String filePath, String fileExtension) {
         if (fileExtension.equalsIgnoreCase("docx")) {
             return rewriteDocxFile(originalFile, wordDocReplace, filePath);
         }
         return rewriteDocFile(originalFile, wordDocReplace, filePath);
     }
 
-    private String rewriteDocxFile(MultipartFile originalFile, WordDocReplace wordDocReplace, String filePath) {
+    private String rewriteDocxFile(MultipartFile originalFile, List<WordDocReplace> wordDocReplace, String filePath) {
         try (InputStream originalStream = originalFile.getInputStream();
              XWPFDocument document = new XWPFDocument(originalStream); // ← ЧИТАЕМ ИСХОДНИК!
              FileOutputStream out = new FileOutputStream(filePath)) {
@@ -42,7 +42,10 @@ public class WordDocEditor {
             createFolder(filePath);
 
             // РЕДАКТИРУЕМ исходный документ, а не создаем новый
-            editDocxContent(document, wordDocReplace.searchText(), wordDocReplace.replacementText());
+            for (WordDocReplace docReplace : wordDocReplace) {
+                editDocxContent(document, docReplace.searchText(), docReplace.replacementText());
+            }
+
 
             document.write(out);
 
@@ -145,7 +148,7 @@ public class WordDocEditor {
     }
 
 
-    private String rewriteDocFile(MultipartFile originalFile, WordDocReplace wordDocReplace, String filePath) {
+    private String rewriteDocFile(MultipartFile originalFile, List<WordDocReplace> wordDocReplace, String filePath) {
         try (InputStream originalStream = originalFile.getInputStream();
              HWPFDocument document = new HWPFDocument(originalStream); // ← Читаем исходный файл
              FileOutputStream out = new FileOutputStream(filePath)) {
@@ -153,7 +156,9 @@ public class WordDocEditor {
             createFolder(filePath);
 
             // Редактируем содержимое документа
-            editDocContent(document, wordDocReplace.searchText(), wordDocReplace.replacementText());
+            for (WordDocReplace docReplace : wordDocReplace) {
+                editDocContent(document, docReplace.searchText(), docReplace.replacementText());
+            }
 
             document.write(out);
 

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.WordDocContent;
-import ru.aialchemy.agent.models.WordDocReplace;
+import ru.aialchemy.agent.models.WordDocReplaces;
 import ru.aialchemy.agent.services.doc.edit.WordDocEditor;
 
 @Component
@@ -36,10 +36,10 @@ public class ContentTools {
     public String editText(ToolContext toolContext, @ToolParam(description = "значение из jobResult") String jobResult) {
         log.info("Результаты работы LLM: {}", jobResult);
         try {
-            WordDocReplace wordDocReplace = mapper.readValue(jobResult, WordDocReplace.class);
+            WordDocReplaces wordDocReplace = mapper.readValue(jobResult, WordDocReplaces.class);
             var docContent = (WordDocContent) toolContext.getContext().get("fileContent");
             var originalFile = (MultipartFile) toolContext.getContext().get("originalFile");
-            return wordDocEditor.rewriteFile(originalFile, wordDocReplace,
+            return wordDocEditor.rewriteFile(originalFile, wordDocReplace.wordDocReplaces(),
                     folderSavingPath + "/" + docContent.fileName(), docContent.fileExtension());
         } catch (JsonProcessingException e) {
             log.error("Не удалось десериализовать результаты работы LLM", e);
