@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.models.docIn.WordDocContent;
 import ru.aialchemy.agent.services.doc.read.WordDocValidator;
 import ru.aialchemy.agent.services.doc.read.WordDocReader;
 
@@ -31,7 +31,7 @@ class WordDocValidatorTest {
                 "test.docx", "test.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "test content".getBytes()
         );
 
-        var expectedResult = new WordDocContent("test.docx", "Test content", 1, java.util.List.of("Test content"), "docx");
+        var expectedResult = new WordDocContent("test.docx", "Test content", 1, java.util.List.of("Test content"), "docx", null);
         when(wordDocReader.readWordDocument(any(MultipartFile.class), eq("docx"), eq("test.docx")))
                 .thenReturn(expectedResult);
 
@@ -51,7 +51,7 @@ class WordDocValidatorTest {
                 "test.doc", "test.doc", "application/msword", "test content".getBytes()
         );
 
-        var expectedResult = new WordDocContent("test.doc", "Test content", 1, java.util.List.of("Test content"), "docx");
+        var expectedResult = new WordDocContent("test.doc", "Test content", 1, java.util.List.of("Test content"), "docx", null);
         when(wordDocReader.readWordDocument(any(MultipartFile.class), eq("doc"), eq("test.doc")))
                 .thenReturn(expectedResult);
 

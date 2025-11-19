@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.models.docIn.WordDocContent;
 import ru.aialchemy.agent.services.llm.GigaChatSrv;
 import ru.aialchemy.agent.services.doc.read.WordDocValidator;
 
@@ -49,7 +49,7 @@ class AiControllerTest {
                 "userRq", "", "application/json", requestBody.getBytes()
         );
 
-        var validResponse = new WordDocContent("test.docx", "Test content", 1, List.of("Test content"), "docx");
+        var validResponse = new WordDocContent("test.docx", "Test content", 1, List.of("Test content"), "docx", null);
         when(wordDocValidator.validate(any())).thenReturn(validResponse);
 
         // When & Then

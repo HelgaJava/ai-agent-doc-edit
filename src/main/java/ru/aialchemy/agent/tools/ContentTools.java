@@ -43,15 +43,6 @@ public class ContentTools {
         }
     }
 
-//    @Tool(description = "Вычислить % выполнения")
-//    public String calcValue(@ToolParam(description = "значение Факт") String fact,
-//                            @ToolParam(description = "значение План") String plan) {
-//        float factInt = Float.parseFloat(fact);
-//        float planInt = Float.parseFloat(plan);
-//        float result = (factInt / planInt) * 100;
-//        return String.valueOf(Math.round(result));
-//    }
-
     @Tool(description = "Внести изменения в отчет")
     public String editText(ToolContext toolContext, @ToolParam(description = "значение из jobResult") String jobResult) {
         log.info("Результаты работы LLM: {}", jobResult);

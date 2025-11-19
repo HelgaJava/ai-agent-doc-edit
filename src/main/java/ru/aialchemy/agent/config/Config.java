@@ -4,8 +4,6 @@ import chat.giga.springai.GigaChatOptions;
 import chat.giga.springai.api.chat.GigaChatApi;
 import jakarta.servlet.MultipartConfigElement;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +30,6 @@ public class Config {
                     .defaultSystem(systemPrompt)
                     .defaultAdvisors(new SimpleLoggerAdvisor())
                     .defaultOptions(GigaChatOptions.builder()
-//                            .model(GigaChatApi.ChatModel.GIGA_CHAT)
                             .model(GigaChatApi.ChatModel.GIGA_CHAT_2_PRO)
                             .build())
                     .defaultTools(contentTools)
