@@ -7,7 +7,7 @@ import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aialchemy.agent.models.WordDocReplace;
+import ru.aialchemy.agent.models.docRepl.WordDocReplace;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class WordDocEditor {
 
             // РЕДАКТИРУЕМ исходный документ, а не создаем новый
             for (WordDocReplace docReplace : wordDocReplace) {
-                editDocxContent(document, docReplace.searchText(), docReplace.replacementText());
+                editDocxContent(document, docReplace.searchText(), docReplace.replacementText(), docReplace.isTableValue(), docReplace.indexRow(), docReplace.indexColumn());
             }
 
 
@@ -58,20 +58,30 @@ public class WordDocEditor {
         return SUCCESS_MESSAGE + filePath;
     }
 
-    private void editDocxContent(XWPFDocument document, String searchText, String replacement) {
+    private void editDocxContent(XWPFDocument document, String searchText, String replacement, boolean isTableValue, int indexRow, int indexColumn) {
         // Редактируем параграфы
-        for (XWPFParagraph paragraph : document.getParagraphs()) {
-            editParagraph(paragraph, searchText, replacement);
-        }
-
-        // Редактируем таблицы
-        for (XWPFTable table : document.getTables()) {
-            for (XWPFTableRow row : table.getRows()) {
-                for (XWPFTableCell cell : row.getTableCells()) {
-                    for (XWPFParagraph paragraph : cell.getParagraphs()) {
-                        editParagraph(paragraph, searchText, replacement);
-                    }
+        if (!isTableValue) {
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                editParagraph(paragraph, searchText, replacement);
+            }
+        } else {
+            // Редактируем таблицы
+//            for (XWPFTable table : document.getTables()) {
+//                for (XWPFTableRow row : table.getRows()) {
+//                    for (XWPFTableCell cell : row.getTableCells()) {
+//                        for (XWPFParagraph paragraph : cell.getParagraphs()) {
+//                            editParagraph(paragraph, searchText, replacement);
+//                        }
+//                    }
+//                }
+//            }
+            for (XWPFTable table : document.getTables()) {
+                XWPFTableRow row = table.getRow(indexRow);
+                XWPFTableCell cell = row.getCell(indexColumn);
+                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+                    editParagraph(paragraph, searchText, replacement);
                 }
+
             }
         }
     }
@@ -86,6 +96,10 @@ public class WordDocEditor {
             if (runText != null) {
                 paragraphText.append(runText);
             }
+        }
+
+        if (!paragraphText.toString().isEmpty() && searchText.isEmpty()) {
+            return;
         }
 
         // Если нашли текст для замены

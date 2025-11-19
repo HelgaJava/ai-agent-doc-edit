@@ -5,7 +5,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.aialchemy.agent.models.UserRq;
-import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.models.docIn.WordDocContent;
 
 import java.util.Map;
 

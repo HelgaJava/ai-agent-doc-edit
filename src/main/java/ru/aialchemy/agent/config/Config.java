@@ -32,7 +32,8 @@ public class Config {
                     .defaultSystem(systemPrompt)
                     .defaultAdvisors(new SimpleLoggerAdvisor())
                     .defaultOptions(GigaChatOptions.builder()
-                            .model(GigaChatApi.ChatModel.GIGA_CHAT)
+//                            .model(GigaChatApi.ChatModel.GIGA_CHAT)
+                            .model(GigaChatApi.ChatModel.GIGA_CHAT_2_PRO)
                             .build())
                     .defaultTools(contentTools)
                     .build();

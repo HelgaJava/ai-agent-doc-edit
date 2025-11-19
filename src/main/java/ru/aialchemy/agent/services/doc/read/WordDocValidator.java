@@ -3,7 +3,7 @@ package ru.aialchemy.agent.services.doc.read;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aialchemy.agent.models.WordDocContent;
+import ru.aialchemy.agent.models.docIn.WordDocContent;
 
 import static ru.aialchemy.agent.util.DocUtil.getFileExtension;
 

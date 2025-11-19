@@ -1,4 +1,4 @@
-package ru.aialchemy.agent.models;
+package ru.aialchemy.agent.models.docRepl;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
