@@ -1,21 +1,21 @@
 (0.000 - 254 Mo) 247 Mo - PlantUML Version 1.2020.02
-(0.016 - 254 Mo) 247 Mo - GraphicsEnvironment.isHeadless() true
-(0.016 - 254 Mo) 247 Mo - Forcing -Djava.awt.headless=true
-(0.016 - 254 Mo) 247 Mo - java.awt.headless set as true
-(0.016 - 254 Mo) 247 Mo - Forcing resource load on OpenJdk
-(0.498 - 254 Mo) 245 Mo - Found 1 files
-(0.498 - 254 Mo) 245 Mo - Working on /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams/architecture.puml
-(0.501 - 254 Mo) 245 Mo - Setting current dir: .
-(0.501 - 254 Mo) 245 Mo - Setting current dir: /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams
-(0.501 - 254 Mo) 245 Mo - Using default charset
-(0.510 - 254 Mo) 245 Mo - Reading from architecture.puml
-(0.543 - 254 Mo) 243 Mo - Reading file: architecture.puml
-(0.649 - 254 Mo) 246 Mo - Compilation duration 104
-(0.649 - 254 Mo) 246 Mo - Regex total/invoked/compiled 66/35/30
-(0.649 - 254 Mo) 246 Mo - Matches created 69
-(0.854 - 254 Mo) 242 Mo - Creating file: /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams/architecture.png
-(0.901 - 254 Mo) 230 Mo - Creating image 1061x334
-(1.048 - 254 Mo) 226 Mo - Ok for com.sun.imageio.plugins.png.PNGMetadata
-(1.049 - 254 Mo) 226 Mo - Cannot create com.sun.imageio.plugins.png.PNGMetadata
-(1.264 - 254 Mo) 223 Mo - File size : 32539
-(1.265 - 254 Mo) 223 Mo - Number of image(s): 1
+(0.010 - 254 Mo) 247 Mo - GraphicsEnvironment.isHeadless() true
+(0.011 - 254 Mo) 247 Mo - Forcing -Djava.awt.headless=true
+(0.011 - 254 Mo) 247 Mo - java.awt.headless set as true
+(0.011 - 254 Mo) 247 Mo - Forcing resource load on OpenJdk
+(0.400 - 254 Mo) 245 Mo - Found 1 files
+(0.400 - 254 Mo) 245 Mo - Working on /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams/architecture.puml
+(0.403 - 254 Mo) 245 Mo - Setting current dir: .
+(0.403 - 254 Mo) 245 Mo - Setting current dir: /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams
+(0.403 - 254 Mo) 245 Mo - Using default charset
+(0.408 - 254 Mo) 245 Mo - Reading from architecture.puml
+(0.443 - 254 Mo) 243 Mo - Reading file: architecture.puml
+(0.553 - 254 Mo) 246 Mo - Compilation duration 109
+(0.554 - 254 Mo) 246 Mo - Regex total/invoked/compiled 66/35/30
+(0.554 - 254 Mo) 246 Mo - Matches created 69
+(0.717 - 254 Mo) 242 Mo - Creating file: /home/runner/work/ai-agent-doc-edit/ai-agent-doc-edit/diagrams/architecture.png
+(0.766 - 254 Mo) 230 Mo - Creating image 1061x334
+(0.961 - 254 Mo) 226 Mo - Ok for com.sun.imageio.plugins.png.PNGMetadata
+(0.962 - 254 Mo) 226 Mo - Cannot create com.sun.imageio.plugins.png.PNGMetadata
+(1.135 - 254 Mo) 223 Mo - File size : 32539
+(1.136 - 254 Mo) 223 Mo - Number of image(s): 1

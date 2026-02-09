@@ -41,24 +41,7 @@ flowchart LR
     linkStyle 4 stroke:#f44336
     linkStyle 5 stroke:#9c27b0
 ```
-```plantuml
-@startuml
-participant Client
-participant AiController as "/api/v1/documents/edit\n(AiController)"
-participant GigaChatSrv as "GigaChatSrv\n(LLM client)"
-participant ContentTools as "ContentTools\n(@Tool)"
-participant WordDocEditor as "WordDocEditor"
-participant FileSystem as "File system\n(save.custom.path)"
-
-Client -> AiController : multipart (userRq + file)
-AiController -> GigaChatSrv : parse & validate -> WordDocContent
-GigaChatSrv -> ContentTools : provide toolContext (fileContent)
-ContentTools -> GigaChatSrv : read/tables/text (tool methods)
-GigaChatSrv -> WordDocEditor : instructions / jobResult (apply edits)
-WordDocEditor -> FileSystem : save edited file
-GigaChatSrv -> AiController : return result / response
-@enduml
-```
+![Architecture Diagram](diagrams/architecture.png)
 
 
 ## 3. Техническая реализация (коротко)
