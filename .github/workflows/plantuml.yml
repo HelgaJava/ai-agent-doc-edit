@@ -2,9 +2,8 @@ name: Generate PlantUML Diagrams
 
 on:
   push:
-    paths:
-      - 'README.md'
-      - 'diagrams/*.puml'
+    branches:
+      - demo
 
 permissions:
   contents: write
